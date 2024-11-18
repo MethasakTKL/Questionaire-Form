@@ -79,6 +79,10 @@ export default function QuestionForm() {
     ]);
   };
 
+  const handleDeleteQuestion = (questionId: number) => {
+    setQuestions(questions.filter((q) => q.id !== questionId));
+  };
+
   const handleAddChoice = (questionId: number) => {
     setQuestions(
       questions.map((q) =>
@@ -89,6 +93,19 @@ export default function QuestionForm() {
                 ...q.choices,
                 { id: createId(), description: "", correct: false },
               ],
+            }
+          : q
+      )
+    );
+  };
+
+  const handleDeleteChoice = (questionId: number, choiceId: number) => {
+    setQuestions(
+      questions.map((q) =>
+        q.id === questionId
+          ? {
+              ...q,
+              choices: q.choices.filter((c) => c.id !== choiceId),
             }
           : q
       )
@@ -191,7 +208,11 @@ export default function QuestionForm() {
                         size={1}
                         sx={{ display: "flex", justifyContent: "center" }}
                       >
-                        <IconButton>
+                        <IconButton
+                          onClick={() => {
+                            handleDeleteChoice(question.id, choice.id);
+                          }}
+                        >
                           <DeleteOutline />
                         </IconButton>
                       </Grid>
@@ -210,7 +231,11 @@ export default function QuestionForm() {
                     ml: "2rem",
                   }}
                 >
-                  <Button onClick={() => handleAddChoice(question.id)} startIcon={<Add />} sx={{ color: "#ff5c00" }}>
+                  <Button
+                    onClick={() => handleAddChoice(question.id)}
+                    startIcon={<Add />}
+                    sx={{ color: "#ff5c00" }}
+                  >
                     Add choice
                   </Button>
                 </Box>
@@ -233,6 +258,7 @@ export default function QuestionForm() {
                         Duplicate
                       </Button>
                       <Button
+                      onClick={()=>{handleDeleteQuestion(question.id)}}
                         startIcon={<DeleteOutlineIcon />}
                         sx={{ color: "black" }}
                       >
