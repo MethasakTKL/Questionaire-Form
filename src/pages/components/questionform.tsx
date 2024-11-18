@@ -16,6 +16,7 @@ import {
   Radio,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -24,6 +25,7 @@ interface Choice {
   id: number;
   description: string;
   correct: boolean;
+  helperText?: string;
 }
 
 interface Question {
@@ -58,7 +60,7 @@ export default function QuestionForm() {
     {
       id: 1,
       questionText: "",
-      choices: [{ id: 1, description: "", correct: false }],
+      choices: [{ id: 0, description: "", correct: false }],
     },
   ]);
 
@@ -106,6 +108,23 @@ export default function QuestionForm() {
           ? {
               ...q,
               choices: q.choices.filter((c) => c.id !== choiceId),
+            }
+          : q
+      )
+    );
+  };
+
+  const handleSetCorrectChoice = (questionId: number, choiceId: number) => {
+    setQuestions(
+      questions.map((q) =>
+        q.id === questionId
+          ? {
+              ...q,
+              choices: q.choices.map((c) => ({
+                ...c,
+                correct: c.id === choiceId,
+                helperText: c.id === choiceId ? "This answer is correct" : "",
+              })),
             }
           : q
       )
@@ -190,18 +209,20 @@ export default function QuestionForm() {
                             checkedIcon={
                               <CheckCircle sx={{ color: "#00c62b" }} />
                             }
-                            value="choice1"
-                            name="radio-buttons"
+                            checked={choice.correct}
+                            onChange={() =>
+                              handleSetCorrectChoice(question.id, choice.id)
+                            }
                           />
                         </FormControl>
                       </Grid>
                       <Grid size={10}>
                         <CssTextField
-                          // helperText="This answer is correct"
+                          helperText={choice.helperText}
                           fullWidth
                           required
-                          label="Description"
-                          id="description"
+                          label={`Description ${cIndex + 1}`}
+                          id={`description${cIndex + 1}`}
                         />
                       </Grid>
                       <Grid
@@ -258,7 +279,9 @@ export default function QuestionForm() {
                         Duplicate
                       </Button>
                       <Button
-                      onClick={()=>{handleDeleteQuestion(question.id)}}
+                        onClick={() => {
+                          handleDeleteQuestion(question.id);
+                        }}
                         startIcon={<DeleteOutlineIcon />}
                         sx={{ color: "black" }}
                       >
