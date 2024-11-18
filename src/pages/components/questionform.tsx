@@ -63,13 +63,17 @@ export default function QuestionForm() {
       choices: [{ id: 0, description: "", correct: false }],
     },
   ]);
-
+  {
+    /* ----------------------------------------------------------------------------------------------- */
+  }
   const createId = () => {
     const newId = currentId;
     setCurrentId(currentId + 1);
     return newId;
   };
-
+  {
+    /* ----------------------------------------------------------------------------------------------- */
+  }
   const handleAddQuestion = () => {
     setQuestions([
       ...questions,
@@ -85,6 +89,31 @@ export default function QuestionForm() {
     setQuestions(questions.filter((q) => q.id !== questionId));
   };
 
+  const handleQuestionChange = (id: number, text: string) => {
+    setQuestions(
+      questions.map((q) => (q.id === id ? { ...q, questionText: text } : q))
+    );
+  };
+
+  const handleDuplicateQuestion = (questionId: number) => {
+    const QustionDuplicate = questions.find((q) => q.id === questionId);
+    if (QustionDuplicate) {
+      setQuestions([
+        ...questions,
+        {
+          ...QustionDuplicate,
+          id: createId(),
+          choices: QustionDuplicate.choices.map((c) => ({
+            ...c,
+            id: createId(),
+          })),
+        },
+      ]);
+    }
+  };
+  {
+    /* ----------------------------------------------------------------------------------------------- */
+  }
   const handleAddChoice = (questionId: number) => {
     setQuestions(
       questions.map((q) =>
@@ -114,6 +143,25 @@ export default function QuestionForm() {
     );
   };
 
+  const handleChoiceChange = (
+    questionId: number,
+    choiceId: number,
+    text: string
+  ) => {
+    setQuestions(
+      questions.map((q) =>
+        q.id === questionId
+          ? {
+              ...q,
+              choices: q.choices.map((c) =>
+                c.id === choiceId ? { ...c, description: text } : c
+              ),
+            }
+          : q
+      )
+    );
+  };
+
   const handleSetCorrectChoice = (questionId: number, choiceId: number) => {
     setQuestions(
       questions.map((q) =>
@@ -130,7 +178,9 @@ export default function QuestionForm() {
       )
     );
   };
-
+  {
+    /* ----------------------------------------------------------------------------------------------- */
+  }
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Paper sx={{ width: "100%", height: "100%", margin: "2rem" }}>
@@ -184,11 +234,15 @@ export default function QuestionForm() {
                     required
                     label="Question"
                     id="question"
+                    value={question.questionText}
+                    onChange={(e) =>
+                      handleQuestionChange(question.id, e.target.value)
+                    }
                   />
                 </Box>
                 {/* -----------------------------------Choice-------------------------------------------- */}
                 {question.choices.map((choice, cIndex) => (
-                  <Box id="choice-section">
+                  <Box id="choice-section" key={`choice-${choice.id}`}>
                     <Box
                       key={choice.id}
                       sx={{
@@ -218,11 +272,17 @@ export default function QuestionForm() {
                       </Grid>
                       <Grid size={10}>
                         <CssTextField
-                          helperText={choice.helperText}
                           fullWidth
                           required
-                          label={`Description ${cIndex + 1}`}
-                          id={`description${cIndex + 1}`}
+                          label={`Description${cIndex + 1}`}
+                          value={choice.description}
+                          onChange={(e) =>
+                            handleChoiceChange(
+                              question.id,
+                              choice.id,
+                              e.target.value
+                            )
+                          }
                         />
                       </Grid>
                       <Grid
@@ -273,6 +333,7 @@ export default function QuestionForm() {
                   >
                     <Grid container spacing={1}>
                       <Button
+                        onClick={() => handleDuplicateQuestion(question.id)}
                         startIcon={<ContentCopy />}
                         sx={{ color: "black" }}
                       >
