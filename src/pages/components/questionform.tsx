@@ -89,7 +89,7 @@ export default function QuestionForm() {
     setQuestions(questions.filter((q) => q.id !== questionId));
   };
 
-  const handleQuestionChange = (id: number, text: string) => {
+  const handleQuestionInputChange = (id: number, text: string) => {
     setQuestions(
       questions.map((q) => (q.id === id ? { ...q, questionText: text } : q))
     );
@@ -143,7 +143,7 @@ export default function QuestionForm() {
     );
   };
 
-  const handleChoiceChange = (
+  const handleChoiceInputChange = (
     questionId: number,
     choiceId: number,
     text: string
@@ -236,7 +236,7 @@ export default function QuestionForm() {
                     id="question"
                     value={question.questionText}
                     onChange={(e) =>
-                      handleQuestionChange(question.id, e.target.value)
+                      handleQuestionInputChange(question.id, e.target.value)
                     }
                   />
                 </Box>
@@ -276,8 +276,9 @@ export default function QuestionForm() {
                           required
                           label={`Description${cIndex + 1}`}
                           value={choice.description}
+                          helperText={choice.helperText}
                           onChange={(e) =>
-                            handleChoiceChange(
+                            handleChoiceInputChange(
                               question.id,
                               choice.id,
                               e.target.value
