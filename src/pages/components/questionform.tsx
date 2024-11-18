@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import {
   Add,
   CheckCircle,
+  CodeOutlined,
   ContentCopy,
   DeleteOutline,
 } from "@mui/icons-material";
@@ -43,7 +44,7 @@ const CssTextField = styled(TextField)({
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: "#E0E3E7",
+      borderColor: "#626569",
     },
     "&:hover fieldset": {
       borderColor: "#B2BAC2",
@@ -55,10 +56,16 @@ const CssTextField = styled(TextField)({
 });
 
 export default function QuestionForm() {
-  const [currentId, setCurrentId] = React.useState(1);
+  const [currentQuestionId, setCurrentQuestionId] = React.useState(1);
+  let [currentChoiceId, setCurrentChoiceId] = React.useState(1);
+  const [questionnaireDetail, setQuestionnaireDetail] = React.useState("");
+
+  //Error
+  const [nameError, setNameError] = React.useState(false);
+
   const [questions, setQuestions] = React.useState<Question[]>([
     {
-      id: 1,
+      id: 0,
       questionText: "",
       choices: [{ id: 0, description: "", correct: false }],
     },
@@ -66,21 +73,43 @@ export default function QuestionForm() {
   {
     /* ----------------------------------------------------------------------------------------------- */
   }
-  const createId = () => {
-    const newId = currentId;
-    setCurrentId(currentId + 1);
+  const createQuestionId = () => {
+    const newId = currentQuestionId;
+    setCurrentQuestionId(currentQuestionId + 1);
+    return newId;
+  };
+
+  const createChoiceId = () => {
+    const newId = currentChoiceId;
+    currentChoiceId++;
+    setCurrentChoiceId(currentChoiceId);
     return newId;
   };
   {
     /* ----------------------------------------------------------------------------------------------- */
   }
+
+
+
+  const handleQuestionnaireDetailChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setQuestionnaireDetail(event.target.value);
+    if (event.target.value.length > 0) {
+      setNameError(false);
+    } else {
+      setNameError(true);
+    }
+  };
+
+
   const handleAddQuestion = () => {
     setQuestions([
       ...questions,
       {
-        id: createId(),
+        id: createQuestionId(),
         questionText: "",
-        choices: [{ id: createId(), description: "", correct: false }],
+        choices: [{ id: createChoiceId(), description: "", correct: false }],
       },
     ]);
   };
@@ -102,15 +131,17 @@ export default function QuestionForm() {
         ...questions,
         {
           ...QustionDuplicate,
-          id: createId(),
+          id: createQuestionId(),
           choices: QustionDuplicate.choices.map((c) => ({
             ...c,
-            id: createId(),
+
+            id: createChoiceId(),
           })),
         },
       ]);
     }
   };
+
   {
     /* ----------------------------------------------------------------------------------------------- */
   }
@@ -122,7 +153,7 @@ export default function QuestionForm() {
               ...q,
               choices: [
                 ...q.choices,
-                { id: createId(), description: "", correct: false },
+                { id: createChoiceId(), description: "", correct: false },
               ],
             }
           : q
@@ -202,11 +233,16 @@ export default function QuestionForm() {
               }}
             >
               <CssTextField
-                // helperText="Please fill in questionnaire detail"
                 fullWidth
                 required
                 label="Name"
                 id="name"
+                value={questionnaireDetail}
+                onChange={handleQuestionnaireDetailChange}
+                error={nameError}
+                helperText={
+                  nameError ? "Please fill in questionnaire detail" : ""
+                }
               />
             </Box>
             <Divider />
@@ -232,7 +268,7 @@ export default function QuestionForm() {
                     // helperText="Please fill in the question"
                     fullWidth
                     required
-                    label="Question"
+                    label={`Question ${question.id}`}
                     id="question"
                     value={question.questionText}
                     onChange={(e) =>
@@ -274,7 +310,7 @@ export default function QuestionForm() {
                         <CssTextField
                           fullWidth
                           required
-                          label={`Description${cIndex + 1}`}
+                          label={`Description ${choice.id}`}
                           value={choice.description}
                           helperText={choice.helperText}
                           onChange={(e) =>
@@ -295,7 +331,7 @@ export default function QuestionForm() {
                             handleDeleteChoice(question.id, choice.id);
                           }}
                         >
-                          <DeleteOutline />
+                          <DeleteOutline sx={{ color: "black" }} />
                         </IconButton>
                       </Grid>
                     </Box>
@@ -380,6 +416,26 @@ export default function QuestionForm() {
               </Button>
             </Box>
             {/* ----------------------------------------------------------------------------------------------- */}
+            <Box
+              sx={{
+                display: "flex",
+                // background: "green",
+                justifyContent: "center",
+                margin: "1rem",
+              }}
+            >
+              <Button
+                variant="outlined"
+                startIcon={<CodeOutlined />}
+                sx={{
+                  width: "100%",
+                  color: "#ff5c00",
+                  borderColor: "#ff5c00",
+                }}
+              >
+                Test Validate
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </Paper>
