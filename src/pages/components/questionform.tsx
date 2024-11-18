@@ -20,6 +20,18 @@ import {
 import Grid from "@mui/material/Grid2";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
+interface Choice {
+  id: number;
+  description: string;
+  correct: boolean;
+}
+
+interface Question {
+  id: number;
+  questionText: string;
+  choices: Choice[];
+}
+
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
     color: "#A0AAB4",
@@ -41,6 +53,48 @@ const CssTextField = styled(TextField)({
 });
 
 export default function QuestionForm() {
+  const [currentId, setCurrentId] = React.useState(1);
+  const [questions, setQuestions] = React.useState<Question[]>([
+    {
+      id: 1,
+      questionText: "",
+      choices: [{ id: 1, description: "", correct: false }],
+    },
+  ]);
+
+  const createId = () => {
+    const newId = currentId;
+    setCurrentId(currentId + 1);
+    return newId;
+  };
+
+  const handleAddQuestion = () => {
+    setQuestions([
+      ...questions,
+      {
+        id: createId(),
+        questionText: "",
+        choices: [{ id: createId(), description: "", correct: false }],
+      },
+    ]);
+  };
+
+  const handleAddChoice = (questionId: number) => {
+    setQuestions(
+      questions.map((q) =>
+        q.id === questionId
+          ? {
+              ...q,
+              choices: [
+                ...q.choices,
+                { id: createId(), description: "", correct: false },
+              ],
+            }
+          : q
+      )
+    );
+  };
+
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <Paper sx={{ width: "100%", height: "100%", margin: "2rem" }}>
@@ -62,7 +116,7 @@ export default function QuestionForm() {
               }}
             >
               <CssTextField
-                helperText="Please fill in questionnaire detail"
+                // helperText="Please fill in questionnaire detail"
                 fullWidth
                 required
                 label="Name"
@@ -71,115 +125,126 @@ export default function QuestionForm() {
             </Box>
             <Divider />
             {/* -----------------------------------Question-------------------------------------------- */}
-            <Box id="question-section">
-              <Box
-                sx={{
-                  display: "flex",
-                  // background: "green",
-                  justifyContent: "flex-start",
-                  margin: "1rem",
-                }}
-              >
-                <Typography>Question 1</Typography>
-              </Box>
-              <Box
-                sx={{
-                  margin: "1rem",
-                }}
-              >
-                <CssTextField
-                  helperText="Please fill in the question"
-                  fullWidth
-                  required
-                  label="Question"
-                  id="question"
-                />
-              </Box>
-              {/* -----------------------------------Choice-------------------------------------------- */}
-              <Box id="choice-section">
+            {questions.map((question, qIndex) => (
+              <Box id="question-section" key={`question-${question.id}`}>
                 <Box
                   sx={{
                     display: "flex",
-                    // background: "yellow",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    // background: "green",
+                    justifyContent: "flex-start",
                     margin: "1rem",
                   }}
                 >
-                  <Grid container spacing={1}></Grid>
-                  <Grid
-                    size={1}
-                    sx={{ display: "flex", justifyContent: "center" }}
-                  >
-                    <FormControl>
-                      <Radio
-                        checkedIcon={<CheckCircle sx={{ color: "#00c62b" }} />}
-                        value="choice1"
-                        name="radio-buttons"
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid size={10}>
-                    <CssTextField
-                      // helperText="This answer is correct"
-                      fullWidth
-                      required
-                      label="Description"
-                      id="description"
-                    />
-                  </Grid>
-                  <Grid
-                    size={1}
-                    sx={{ display: "flex", justifyContent: "center" }}
-                  >
-                    <IconButton>
-                      <DeleteOutline />
-                    </IconButton>
-                  </Grid>
+                  <Typography>Question {qIndex + 1}</Typography>
                 </Box>
-              </Box>
-              {/* -----------------------------------Add Choice-------------------------------------------- */}
-              <Box
-                sx={{
-                  display: "flex",
-                  // background: "green",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  margin: "1rem",
-                  ml: "2rem",
-                }}
-              >
-                <Button startIcon={<Add />} sx={{ color: "#ff5c00" }}>
-                  Add choice
-                </Button>
-              </Box>
-              <Divider sx={{ ml: "0.5rem", mr: "0.5rem" }} />
-              {/* -----------------------------------Duplicate & Delete Question-------------------------------------------- */}
-              <Box sx={{ padding: "1rem" }}>
-                <Grid
+                <Box
                   sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    pl: "1rem",
+                    margin: "1rem",
                   }}
                 >
-                  <Grid container spacing={1}>
-                    <Button startIcon={<ContentCopy />} sx={{ color: "black" }}>
-                      Duplicate
-                    </Button>
-                    <Button
-                      startIcon={<DeleteOutlineIcon />}
-                      sx={{ color: "black" }}
+                  <CssTextField
+                    // helperText="Please fill in the question"
+                    fullWidth
+                    required
+                    label="Question"
+                    id="question"
+                  />
+                </Box>
+                {/* -----------------------------------Choice-------------------------------------------- */}
+                {question.choices.map((choice, cIndex) => (
+                  <Box id="choice-section">
+                    <Box
+                      key={choice.id}
+                      sx={{
+                        display: "flex",
+                        // background: "yellow",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        margin: "1rem",
+                      }}
                     >
-                      Delete
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Box>
+                      <Grid container spacing={1}></Grid>
+                      <Grid
+                        size={1}
+                        sx={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <FormControl>
+                          <Radio
+                            checkedIcon={
+                              <CheckCircle sx={{ color: "#00c62b" }} />
+                            }
+                            value="choice1"
+                            name="radio-buttons"
+                          />
+                        </FormControl>
+                      </Grid>
+                      <Grid size={10}>
+                        <CssTextField
+                          // helperText="This answer is correct"
+                          fullWidth
+                          required
+                          label="Description"
+                          id="description"
+                        />
+                      </Grid>
+                      <Grid
+                        size={1}
+                        sx={{ display: "flex", justifyContent: "center" }}
+                      >
+                        <IconButton>
+                          <DeleteOutline />
+                        </IconButton>
+                      </Grid>
+                    </Box>
+                  </Box>
+                ))}
 
-            <Divider />
+                {/* -----------------------------------Add Choice-------------------------------------------- */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    // background: "green",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    margin: "1rem",
+                    ml: "2rem",
+                  }}
+                >
+                  <Button onClick={() => handleAddChoice(question.id)} startIcon={<Add />} sx={{ color: "#ff5c00" }}>
+                    Add choice
+                  </Button>
+                </Box>
+                <Divider sx={{ ml: "0.5rem", mr: "0.5rem" }} />
+                {/* -----------------------------------Duplicate & Delete Question-------------------------------------------- */}
+                <Box sx={{ padding: "1rem" }}>
+                  <Grid
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      pl: "1rem",
+                    }}
+                  >
+                    <Grid container spacing={1}>
+                      <Button
+                        startIcon={<ContentCopy />}
+                        sx={{ color: "black" }}
+                      >
+                        Duplicate
+                      </Button>
+                      <Button
+                        startIcon={<DeleteOutlineIcon />}
+                        sx={{ color: "black" }}
+                      >
+                        Delete
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Box>
+                <Divider />
+              </Box>
+            ))}
+
             {/* -----------------------------------Add Question-------------------------------------------- */}
 
             <Box
@@ -192,6 +257,7 @@ export default function QuestionForm() {
             >
               <Button
                 variant="outlined"
+                onClick={handleAddQuestion}
                 startIcon={<Add />}
                 sx={{
                   width: "100%",
