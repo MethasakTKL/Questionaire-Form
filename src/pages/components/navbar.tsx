@@ -1,13 +1,4 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  Divider,
-  Grid2,
-  Toolbar,
-  Typography,
-} from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import { AppBar, Box, Divider, Toolbar, Typography } from "@mui/material";
 
 export default function NavBar() {
   return (

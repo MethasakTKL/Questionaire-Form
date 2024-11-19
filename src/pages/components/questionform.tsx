@@ -20,7 +20,6 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 interface Choice {
   id: number;
@@ -58,10 +57,11 @@ const CssTextField = styled(TextField)({
 });
 
 export default function QuestionForm() {
-  const [currentQuestionId, setCurrentQuestionId] = React.useState(1);
-  let [currentChoiceId, setCurrentChoiceId] = React.useState(1);
   const [questionnaireDetail, setQuestionnaireDetail] = React.useState("");
   const [nameError, setNameError] = React.useState(false);
+  const [currentQuestionId, setCurrentQuestionId] = React.useState(1);
+  let [currentChoiceId, setCurrentChoiceId] = React.useState(1);
+
 
   const [questions, setQuestions] = React.useState<Question[]>([
     {
@@ -234,7 +234,7 @@ export default function QuestionForm() {
       if (isQuestionEmpty) {
         hasError = true;
       }
-      const isChoicesEmpty = question.choices.map((choice) => {
+      const checkChoices = question.choices.map((choice) => {
         const isChoiceEmpty = choice.description.trim() === "";
         if (isChoiceEmpty) {
           hasError = true;
@@ -248,7 +248,7 @@ export default function QuestionForm() {
       return {
         ...question,
         error: isQuestionEmpty,
-        choices: isChoicesEmpty,
+        choices: checkChoices,
       };
     });
 
@@ -258,10 +258,24 @@ export default function QuestionForm() {
 
   const handleSubmit = () => {
     if (handleValidate() == true) {
-      console.log("Successful");
+      const questionnaireData = {
+        //------------------------
+        questionnaireDetail,
+        //------------------------
+        questions: questions.map((question) => ({
+          id: question.id,
+          questionText: question.questionText,
+          //------------------------
+          choices: question.choices.map((choice) => ({
+            id: choice.id,
+            description: choice.description,
+            correct: choice.correct,
+          })),
+        })),
+      };
+      console.log(questionnaireData);
     } else {
-      handleValidate();
-      console.log("Please Validate");
+      console.log("Please complete the form.");
     }
   };
 
@@ -478,7 +492,7 @@ export default function QuestionForm() {
                           onClick={() => {
                             handleDeleteQuestion(question.id);
                           }}
-                          startIcon={<DeleteOutlineIcon />}
+                          startIcon={<DeleteOutline/>}
                           sx={{ color: "black" }}
                         >
                           Delete
