@@ -3,11 +3,11 @@ import styled from "@emotion/styled";
 import {
   Add,
   CheckCircle,
-  CodeOutlined,
   ContentCopy,
   DeleteOutline,
 } from "@mui/icons-material";
 import {
+  AppBar,
   Box,
   Button,
   Divider,
@@ -16,8 +16,8 @@ import {
   Paper,
   Radio,
   TextField,
+  Toolbar,
   Typography,
-  useMediaQuery,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -27,12 +27,14 @@ interface Choice {
   description: string;
   correct: boolean;
   helperText?: string;
+  error?: boolean;
 }
 
 interface Question {
   id: number;
   questionText: string;
   choices: Choice[];
+  error?: boolean;
 }
 
 const CssTextField = styled(TextField)({
@@ -59,8 +61,6 @@ export default function QuestionForm() {
   const [currentQuestionId, setCurrentQuestionId] = React.useState(1);
   let [currentChoiceId, setCurrentChoiceId] = React.useState(1);
   const [questionnaireDetail, setQuestionnaireDetail] = React.useState("");
-
-  //Error
   const [nameError, setNameError] = React.useState(false);
 
   const [questions, setQuestions] = React.useState<Question[]>([
@@ -71,7 +71,7 @@ export default function QuestionForm() {
     },
   ]);
   {
-    /* ----------------------------------------------------------------------------------------------- */
+    /* ----------------------------------------<ID>------------------------------------------ */
   }
   const createQuestionId = () => {
     const newId = currentQuestionId;
@@ -89,19 +89,16 @@ export default function QuestionForm() {
     /* ----------------------------------------------------------------------------------------------- */
   }
 
-
-
   const handleQuestionnaireDetailChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setQuestionnaireDetail(event.target.value);
-    if (event.target.value.length > 0) {
+    const value = event.target.value;
+    setQuestionnaireDetail(value);
+
+    if (value.trim() !== "") {
       setNameError(false);
-    } else {
-      setNameError(true);
     }
   };
-
 
   const handleAddQuestion = () => {
     setQuestions([
@@ -110,6 +107,7 @@ export default function QuestionForm() {
         id: createQuestionId(),
         questionText: "",
         choices: [{ id: createChoiceId(), description: "", correct: false }],
+        error: false,
       },
     ]);
   };
@@ -120,7 +118,11 @@ export default function QuestionForm() {
 
   const handleQuestionInputChange = (id: number, text: string) => {
     setQuestions(
-      questions.map((q) => (q.id === id ? { ...q, questionText: text } : q))
+      questions.map((q) =>
+        q.id === id
+          ? { ...q, questionText: text, error: text.trim() === "" }
+          : q
+      )
     );
   };
 
@@ -185,7 +187,9 @@ export default function QuestionForm() {
           ? {
               ...q,
               choices: q.choices.map((c) =>
-                c.id === choiceId ? { ...c, description: text } : c
+                c.id === choiceId
+                  ? { ...c, description: text, error: text.trim() === "" }
+                  : c
               ),
             }
           : q
@@ -209,236 +213,302 @@ export default function QuestionForm() {
       )
     );
   };
+
+  const handleValidate = () => {
+    let hasError = false;
+
+    if (questionnaireDetail.trim() === "") {
+      setNameError(true);
+      hasError = true;
+    } else {
+      setNameError(false);
+    }
+
+    const checkQuestions = questions.map((question) => {
+      const isQuestionEmpty = question.questionText.trim() === "";
+      if (isQuestionEmpty) {
+        hasError = true;
+      }
+     const isChoicesEmpty = question.choices.map((choice) => {
+        const isChoiceEmpty = choice.description.trim() === "";
+        if (isChoiceEmpty) {
+          hasError = true;
+        }
+        return {
+          ...choice,
+          error: isChoiceEmpty,
+        };
+      });
+
+      return {
+        ...question,
+        error: isQuestionEmpty,
+        choices: isChoicesEmpty,
+      };
+    });
+
+    setQuestions(checkQuestions);
+    return !hasError;
+  };
+
   {
-    /* ----------------------------------------------------------------------------------------------- */
+    /* --------------------------------------------------------------------------------------------------------------------------------- */
   }
   return (
-    <Box sx={{ display: "flex", justifyContent: "center" }}>
-      <Paper sx={{ width: "100%", height: "100%", margin: "2rem" }}>
-        <Grid container>
-          <Grid size={12}>
-            <Box
-              sx={{
-                display: "flex",
-                // background: "yellow",
-                justifyContent: "flex-start",
-                margin: "1rem",
-              }}
-            >
-              <Typography>Questionnaire Detail</Typography>
-            </Box>
-            <Box
-              sx={{
-                margin: "1rem",
-              }}
-            >
-              <CssTextField
-                fullWidth
-                required
-                label="Name"
-                id="name"
-                value={questionnaireDetail}
-                onChange={handleQuestionnaireDetailChange}
-                error={nameError}
-                helperText={
-                  nameError ? "Please fill in questionnaire detail" : ""
-                }
-              />
-            </Box>
-            <Divider />
-            {/* -----------------------------------Question-------------------------------------------- */}
-            {questions.map((question, qIndex) => (
-              <Box id="question-section" key={`question-${question.id}`}>
-                <Box
+    <Box>
+      <AppBar position="static" elevation={0} sx={{ background: "white" }}>
+        <Toolbar>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Grid container spacing={1}>
+              <Grid>
+                <Button
+                  variant="outlined"
                   sx={{
-                    display: "flex",
-                    // background: "green",
-                    justifyContent: "flex-start",
-                    margin: "1rem",
+                    color: "#ff5c00",
+                    borderColor: "#ff5c00",
                   }}
                 >
-                  <Typography>Question {qIndex + 1}</Typography>
-                </Box>
-                <Box
+                  Cancel
+                </Button>
+              </Grid>
+              <Grid>
+                <Button
+                  variant="contained"
+                  onClick={handleValidate}
                   sx={{
-                    margin: "1rem",
+                    background: "#ff5c00",
+                    width: 150,
                   }}
                 >
-                  <CssTextField
-                    // helperText="Please fill in the question"
-                    fullWidth
-                    required
-                    label={`Question ${question.id}`}
-                    id="question"
-                    value={question.questionText}
-                    onChange={(e) =>
-                      handleQuestionInputChange(question.id, e.target.value)
-                    }
-                  />
-                </Box>
-                {/* -----------------------------------Choice-------------------------------------------- */}
-                {question.choices.map((choice, cIndex) => (
-                  <Box id="choice-section" key={`choice-${choice.id}`}>
-                    <Box
-                      key={choice.id}
-                      sx={{
-                        display: "flex",
-                        // background: "yellow",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        margin: "1rem",
-                      }}
-                    >
-                      <Grid container spacing={1}></Grid>
-                      <Grid
-                        size={1}
-                        sx={{ display: "flex", justifyContent: "center" }}
-                      >
-                        <FormControl>
-                          <Radio
-                            checkedIcon={
-                              <CheckCircle sx={{ color: "#00c62b" }} />
-                            }
-                            checked={choice.correct}
-                            onChange={() =>
-                              handleSetCorrectChoice(question.id, choice.id)
-                            }
-                          />
-                        </FormControl>
-                      </Grid>
-                      <Grid size={10}>
-                        <CssTextField
-                          fullWidth
-                          required
-                          label={`Description ${choice.id}`}
-                          value={choice.description}
-                          helperText={choice.helperText}
-                          onChange={(e) =>
-                            handleChoiceInputChange(
-                              question.id,
-                              choice.id,
-                              e.target.value
-                            )
-                          }
-                        />
-                      </Grid>
-                      <Grid
-                        size={1}
-                        sx={{ display: "flex", justifyContent: "center" }}
-                      >
-                        <IconButton
-                          onClick={() => {
-                            handleDeleteChoice(question.id, choice.id);
-                          }}
-                        >
-                          <DeleteOutline sx={{ color: "black" }} />
-                        </IconButton>
-                      </Grid>
-                    </Box>
-                  </Box>
-                ))}
-
-                {/* -----------------------------------Add Choice-------------------------------------------- */}
-                <Box
-                  sx={{
-                    display: "flex",
-                    // background: "green",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    margin: "1rem",
-                    ml: "2rem",
-                  }}
-                >
-                  <Button
-                    onClick={() => handleAddChoice(question.id)}
-                    startIcon={<Add />}
-                    sx={{ color: "#ff5c00" }}
-                  >
-                    Add choice
-                  </Button>
-                </Box>
-                <Divider sx={{ ml: "0.5rem", mr: "0.5rem" }} />
-                {/* -----------------------------------Duplicate & Delete Question-------------------------------------------- */}
-                <Box sx={{ padding: "1rem" }}>
-                  <Grid
+                  Save
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Paper sx={{ width: "100%", height: "100%", margin: "2rem" }}>
+          <Grid container>
+            <Grid size={12}>
+              <Box
+                sx={{
+                  display: "flex",
+                  // background: "yellow",
+                  justifyContent: "flex-start",
+                  margin: "1rem",
+                }}
+              >
+                <Typography>Questionnaire Detail</Typography>
+              </Box>
+              <Box
+                sx={{
+                  margin: "1rem",
+                }}
+              >
+                <CssTextField
+                  fullWidth
+                  required
+                  label="Name"
+                  id="name"
+                  value={questionnaireDetail}
+                  onChange={handleQuestionnaireDetailChange}
+                  error={nameError}
+                  helperText={
+                    nameError ? "Please fill in questionnaire detail" : ""
+                  }
+                />
+              </Box>
+              <Divider />
+              {/* -----------------------------------Question-------------------------------------------- */}
+              {questions.map((question, qIndex) => (
+                <Box id="question-section" key={`question-${question.id}`}>
+                  <Box
                     sx={{
                       display: "flex",
+                      // background: "green",
                       justifyContent: "flex-start",
-                      alignItems: "center",
-                      pl: "1rem",
+                      margin: "1rem",
                     }}
                   >
-                    <Grid container spacing={1}>
-                      <Button
-                        onClick={() => handleDuplicateQuestion(question.id)}
-                        startIcon={<ContentCopy />}
-                        sx={{ color: "black" }}
-                      >
-                        Duplicate
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          handleDeleteQuestion(question.id);
+                    <Typography>Question {qIndex + 1}</Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      margin: "1rem",
+                    }}
+                  >
+                    <CssTextField
+                      // helperText="Please fill in the question"
+                      fullWidth
+                      required
+                      label={`Question`} //${question.id}
+                      id="question"
+                      value={question.questionText}
+                      error={question.error}
+                      helperText={
+                        question.error ? "Please fill in the question" : ""
+                      }
+                      onChange={(e) =>
+                        handleQuestionInputChange(question.id, e.target.value)
+                      }
+                    />
+                  </Box>
+                  {/* -----------------------------------Choice-------------------------------------------- */}
+                  {question.choices.map((choice, cIndex) => (
+                    <Box id="choice-section" key={`choice-${choice.id}`}>
+                      <Box
+                        key={choice.id}
+                        sx={{
+                          display: "flex",
+                          // background: "yellow",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          margin: "1rem",
                         }}
-                        startIcon={<DeleteOutlineIcon />}
-                        sx={{ color: "black" }}
                       >
-                        Delete
-                      </Button>
+                        <Grid container spacing={1}></Grid>
+                        <Grid
+                          size={1}
+                          sx={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <FormControl>
+                            <Radio
+                              checkedIcon={
+                                <CheckCircle sx={{ color: "#00c62b" }} />
+                              }
+                              checked={choice.correct}
+                              onChange={() =>
+                                handleSetCorrectChoice(question.id, choice.id)
+                              }
+                            />
+                          </FormControl>
+                        </Grid>
+                        <Grid size={10}>
+                          <CssTextField
+                            fullWidth
+                            required
+                            label={`Description`} //${choice.id}
+                            value={choice.description}
+                            helperText={
+                              choice.error
+                                ? "Please fill in the choice"
+                                : choice.helperText
+                            }
+                            error={choice.error}
+                            onChange={(e) =>
+                              handleChoiceInputChange(
+                                question.id,
+                                choice.id,
+                                e.target.value
+                              )
+                            }
+                          />
+                        </Grid>
+                        <Grid
+                          size={1}
+                          sx={{ display: "flex", justifyContent: "center" }}
+                        >
+                          <IconButton
+                            onClick={() => {
+                              handleDeleteChoice(question.id, choice.id);
+                            }}
+                          >
+                            <DeleteOutline sx={{ color: "black" }} />
+                          </IconButton>
+                        </Grid>
+                      </Box>
+                    </Box>
+                  ))}
+
+                  {/* -----------------------------------Add Choice-------------------------------------------- */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      // background: "green",
+                      justifyContent: "flex-start",
+                      alignItems: "center",
+                      margin: "1rem",
+                      ml: "2rem",
+                    }}
+                  >
+                    <Button
+                      onClick={() => handleAddChoice(question.id)}
+                      startIcon={<Add />}
+                      sx={{ color: "#ff5c00" }}
+                    >
+                      Add choice
+                    </Button>
+                  </Box>
+                  <Divider sx={{ ml: "0.5rem", mr: "0.5rem" }} />
+                  {/* -----------------------------------Duplicate & Delete Question-------------------------------------------- */}
+                  <Box sx={{ padding: "1rem" }}>
+                    <Grid
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        pl: "1rem",
+                      }}
+                    >
+                      <Grid container spacing={1}>
+                        <Button
+                          onClick={() => handleDuplicateQuestion(question.id)}
+                          startIcon={<ContentCopy />}
+                          sx={{ color: "black" }}
+                        >
+                          Duplicate
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            handleDeleteQuestion(question.id);
+                          }}
+                          startIcon={<DeleteOutlineIcon />}
+                          sx={{ color: "black" }}
+                        >
+                          Delete
+                        </Button>
+                      </Grid>
                     </Grid>
-                  </Grid>
+                  </Box>
+                  <Divider />
                 </Box>
-                <Divider />
+              ))}
+
+              {/* -----------------------------------Add Question-------------------------------------------- */}
+
+              <Box
+                sx={{
+                  display: "flex",
+                  // background: "green",
+                  justifyContent: "center",
+                  margin: "1rem",
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  onClick={handleAddQuestion}
+                  startIcon={<Add />}
+                  sx={{
+                    width: "100%",
+                    color: "#ff5c00",
+                    borderColor: "#ff5c00",
+                  }}
+                >
+                  Add question
+                </Button>
               </Box>
-            ))}
-
-            {/* -----------------------------------Add Question-------------------------------------------- */}
-
-            <Box
-              sx={{
-                display: "flex",
-                // background: "green",
-                justifyContent: "center",
-                margin: "1rem",
-              }}
-            >
-              <Button
-                variant="outlined"
-                onClick={handleAddQuestion}
-                startIcon={<Add />}
-                sx={{
-                  width: "100%",
-                  color: "#ff5c00",
-                  borderColor: "#ff5c00",
-                }}
-              >
-                Add question
-              </Button>
-            </Box>
-            {/* ----------------------------------------------------------------------------------------------- */}
-            <Box
-              sx={{
-                display: "flex",
-                // background: "green",
-                justifyContent: "center",
-                margin: "1rem",
-              }}
-            >
-              <Button
-                variant="outlined"
-                startIcon={<CodeOutlined />}
-                sx={{
-                  width: "100%",
-                  color: "#ff5c00",
-                  borderColor: "#ff5c00",
-                }}
-              >
-                Test Validate
-              </Button>
-            </Box>
+              {/* ----------------------------------------------------------------------------------------------- */}
+            </Grid>
           </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
+      </Box>
     </Box>
   );
 }
