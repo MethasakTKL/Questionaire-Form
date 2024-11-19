@@ -70,9 +70,7 @@ export default function QuestionForm() {
       choices: [{ id: 0, description: "", correct: false }],
     },
   ]);
-  {
-    /* ----------------------------------------<ID>------------------------------------------ */
-  }
+
   const createQuestionId = () => {
     const newId = currentQuestionId;
     setCurrentQuestionId(currentQuestionId + 1);
@@ -85,9 +83,6 @@ export default function QuestionForm() {
     setCurrentChoiceId(currentChoiceId);
     return newId;
   };
-  {
-    /* ----------------------------------------------------------------------------------------------- */
-  }
 
   const handleQuestionnaireDetailChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -144,9 +139,6 @@ export default function QuestionForm() {
     }
   };
 
-  {
-    /* ----------------------------------------------------------------------------------------------- */
-  }
   const handleAddChoice = (questionId: number) => {
     setQuestions(
       questions.map((q) =>
@@ -213,6 +205,19 @@ export default function QuestionForm() {
       )
     );
   };
+  const handleReset = () => {
+    setQuestionnaireDetail("");
+    setNameError(false);
+    setQuestions([
+      {
+        id: 0,
+        questionText: "",
+        choices: [{ id: 0, description: "", correct: false }],
+      },
+    ]);
+    setCurrentQuestionId(1);
+    setCurrentChoiceId(1);
+  };
 
   const handleValidate = () => {
     let hasError = false;
@@ -229,7 +234,7 @@ export default function QuestionForm() {
       if (isQuestionEmpty) {
         hasError = true;
       }
-     const isChoicesEmpty = question.choices.map((choice) => {
+      const isChoicesEmpty = question.choices.map((choice) => {
         const isChoiceEmpty = choice.description.trim() === "";
         if (isChoiceEmpty) {
           hasError = true;
@@ -251,9 +256,16 @@ export default function QuestionForm() {
     return !hasError;
   };
 
-  {
-    /* --------------------------------------------------------------------------------------------------------------------------------- */
-  }
+  const handleSubmit = () => {
+    if (handleValidate() == true) {
+      console.log("Successful");
+    } else {
+      handleValidate();
+      console.log("Please Validate");
+    }
+  };
+
+  //----------------------------------------------------------------------------------------------------------------------
   return (
     <Box>
       <AppBar position="static" elevation={0} sx={{ background: "white" }}>
@@ -268,6 +280,7 @@ export default function QuestionForm() {
             <Grid container spacing={1}>
               <Grid>
                 <Button
+                  onClick={handleReset}
                   variant="outlined"
                   sx={{
                     color: "#ff5c00",
@@ -280,7 +293,7 @@ export default function QuestionForm() {
               <Grid>
                 <Button
                   variant="contained"
-                  onClick={handleValidate}
+                  onClick={handleSubmit}
                   sx={{
                     background: "#ff5c00",
                     width: 150,
@@ -300,7 +313,6 @@ export default function QuestionForm() {
               <Box
                 sx={{
                   display: "flex",
-                  // background: "yellow",
                   justifyContent: "flex-start",
                   margin: "1rem",
                 }}
@@ -332,7 +344,6 @@ export default function QuestionForm() {
                   <Box
                     sx={{
                       display: "flex",
-                      // background: "green",
                       justifyContent: "flex-start",
                       margin: "1rem",
                     }}
@@ -345,15 +356,14 @@ export default function QuestionForm() {
                     }}
                   >
                     <CssTextField
-                      // helperText="Please fill in the question"
                       fullWidth
                       required
-                      label={`Question`} //${question.id}
+                      label={`Question`} //${question.id} // todebug
                       id="question"
                       value={question.questionText}
                       error={question.error}
                       helperText={
-                        question.error ? "Please fill in the question" : ""
+                        question.error ? "Please fill in this question" : ""
                       }
                       onChange={(e) =>
                         handleQuestionInputChange(question.id, e.target.value)
@@ -361,13 +371,12 @@ export default function QuestionForm() {
                     />
                   </Box>
                   {/* -----------------------------------Choice-------------------------------------------- */}
-                  {question.choices.map((choice, cIndex) => (
+                  {question.choices.map((choice) => (
                     <Box id="choice-section" key={`choice-${choice.id}`}>
                       <Box
                         key={choice.id}
                         sx={{
                           display: "flex",
-                          // background: "yellow",
                           justifyContent: "center",
                           alignItems: "center",
                           margin: "1rem",
@@ -394,11 +403,11 @@ export default function QuestionForm() {
                           <CssTextField
                             fullWidth
                             required
-                            label={`Description`} //${choice.id}
+                            label={`Description`} // ${choice.id} //to debug
                             value={choice.description}
                             helperText={
                               choice.error
-                                ? "Please fill in the choice"
+                                ? "Please fill in this option"
                                 : choice.helperText
                             }
                             error={choice.error}
@@ -504,7 +513,6 @@ export default function QuestionForm() {
                   Add question
                 </Button>
               </Box>
-              {/* ----------------------------------------------------------------------------------------------- */}
             </Grid>
           </Grid>
         </Paper>
