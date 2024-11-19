@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import NavBar from "./components/navbar";
-import QuestionForm from "./components/questionform";
+import NavBar from "./components/NavBar";
+import QuestionForm from "./components/QuestionForm";
 
 import "@fontsource/prompt";
 
