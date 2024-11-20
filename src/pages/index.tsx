@@ -2,8 +2,7 @@ import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavBar from "./components/NavBar";
 import QuestionForm from "./components/QuestionForm";
-import {Prompt} from "next/font/google";
-
+import { Prompt } from "next/font/google";
 
 const prompt = Prompt({
   weight: ["100", "300", "400", "700", "900"],
@@ -20,7 +19,7 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
       <Box>
-        <NavBar/>
+        <NavBar />
         <QuestionForm />
       </Box>
     </ThemeProvider>
