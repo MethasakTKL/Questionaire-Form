@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "@emotion/styled";
+import { v4 as uuidv4 } from "uuid";
 import {
   Add,
   CheckCircle,
@@ -22,7 +23,7 @@ import {
 import Grid from "@mui/material/Grid2";
 
 interface Choice {
-  id: number;
+  id: string | number;
   description: string;
   correct: boolean;
   helperText?: string;
@@ -60,8 +61,7 @@ export default function QuestionForm() {
   const [questionnaireDetail, setQuestionnaireDetail] = React.useState("");
   const [nameError, setNameError] = React.useState(false);
   const [currentQuestionId, setCurrentQuestionId] = React.useState(1);
-  let [currentChoiceId, setCurrentChoiceId] = React.useState(1);
-
+  const [currentChoiceId, setCurrentChoiceId] = React.useState(1);
 
   const [questions, setQuestions] = React.useState<Question[]>([
     {
@@ -74,13 +74,6 @@ export default function QuestionForm() {
   const createQuestionId = () => {
     const newId = currentQuestionId;
     setCurrentQuestionId(currentQuestionId + 1);
-    return newId;
-  };
-
-  const createChoiceId = () => {
-    const newId = currentChoiceId;
-    currentChoiceId++;
-    setCurrentChoiceId(currentChoiceId);
     return newId;
   };
 
@@ -101,7 +94,7 @@ export default function QuestionForm() {
       {
         id: createQuestionId(),
         questionText: "",
-        choices: [{ id: createChoiceId(), description: "", correct: false }],
+        choices: [{ id: uuidv4(), description: "", correct: false }],
         error: false,
       },
     ]);
@@ -131,8 +124,7 @@ export default function QuestionForm() {
           id: createQuestionId(),
           choices: QustionDuplicate.choices.map((c) => ({
             ...c,
-
-            id: createChoiceId(),
+            id: uuidv4(),
           })),
         },
       ]);
@@ -147,7 +139,11 @@ export default function QuestionForm() {
               ...q,
               choices: [
                 ...q.choices,
-                { id: createChoiceId(), description: "", correct: false },
+                {
+                  id: uuidv4(),
+                  description: "",
+                  correct: false,
+                },
               ],
             }
           : q
@@ -155,7 +151,10 @@ export default function QuestionForm() {
     );
   };
 
-  const handleDeleteChoice = (questionId: number, choiceId: number) => {
+  const handleDeleteChoice = (
+    questionId: number,
+    choiceId: string | number
+  ) => {
     setQuestions(
       questions.map((q) =>
         q.id === questionId
@@ -170,7 +169,7 @@ export default function QuestionForm() {
 
   const handleChoiceInputChange = (
     questionId: number,
-    choiceId: number,
+    choiceId: string | number,
     text: string
   ) => {
     setQuestions(
@@ -189,7 +188,10 @@ export default function QuestionForm() {
     );
   };
 
-  const handleSetCorrectChoice = (questionId: number, choiceId: number) => {
+  const handleSetCorrectChoice = (
+    questionId: number,
+    choiceId: string | number
+  ) => {
     setQuestions(
       questions.map((q) =>
         q.id === questionId
@@ -417,7 +419,7 @@ export default function QuestionForm() {
                           <CssTextField
                             fullWidth
                             required
-                            label={`Description`} // ${choice.id} //to debug
+                            label={`Description`} // ${choice.id}//to debug
                             value={choice.description}
                             helperText={
                               choice.error
@@ -492,7 +494,7 @@ export default function QuestionForm() {
                           onClick={() => {
                             handleDeleteQuestion(question.id);
                           }}
-                          startIcon={<DeleteOutline/>}
+                          startIcon={<DeleteOutline />}
                           sx={{ color: "black" }}
                         >
                           Delete
