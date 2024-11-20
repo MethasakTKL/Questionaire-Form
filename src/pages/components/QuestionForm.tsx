@@ -37,6 +37,12 @@ interface Question {
   error?: boolean;
 }
 
+const initValue = {
+  id: 0,
+  questionText: "",
+  choices: [{ id: 0, description: "", correct: false }],
+};
+
 const CssTextField = styled(TextField)({
   "& label.Mui-focused": {
     color: "#A0AAB4",
@@ -63,13 +69,7 @@ export default function QuestionForm() {
   const [currentQuestionId, setCurrentQuestionId] = React.useState(1);
   const [currentChoiceId, setCurrentChoiceId] = React.useState(1);
 
-  const [questions, setQuestions] = React.useState<Question[]>([
-    {
-      id: 0,
-      questionText: "",
-      choices: [{ id: 0, description: "", correct: false }],
-    },
-  ]);
+  const [questions, setQuestions] = React.useState<Question[]>([initValue]);
 
   const createQuestionId = () => {
     const newId = currentQuestionId;
@@ -210,13 +210,7 @@ export default function QuestionForm() {
   const handleReset = () => {
     setQuestionnaireDetail("");
     setNameError(false);
-    setQuestions([
-      {
-        id: 0,
-        questionText: "",
-        choices: [{ id: 0, description: "", correct: false }],
-      },
-    ]);
+    setQuestions([initValue]);
     setCurrentQuestionId(1);
     setCurrentChoiceId(1);
   };
