@@ -1,9 +1,8 @@
 import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import NavBar from "./components/NavBar";
-import QuestionForm from "./components/QuestionForm";
 
-import "@fontsource/prompt";
+import NavBar from "./components/navbar";
+import QuestionForm from "./components/questionform";
 
 const theme = createTheme({
   typography: {
