@@ -3,9 +3,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import NavBar from "./components/NavBar";
 import QuestionForm from "./components/QuestionForm";
 import { Prompt } from "next/font/google";
-import { Login } from "@mui/icons-material";
-import QuestionnairePage from "./questionaire";
-import LoginPage from "./login";
 
 const prompt = Prompt({
   weight: ["100", "300", "400", "700", "900"],
@@ -18,11 +15,12 @@ const theme = createTheme({
     fontFamily: prompt.style.fontFamily,
   },
 });
-export default function Home() {
+export default function QuestionnairePage() {
   return (
     <ThemeProvider theme={theme}>
       <Box>
-        <LoginPage/>
+        <NavBar />
+        <QuestionForm />
       </Box>
     </ThemeProvider>
   );
