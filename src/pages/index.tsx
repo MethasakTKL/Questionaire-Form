@@ -1,10 +1,6 @@
 import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import NavBar from "./components/NavBar";
-import QuestionForm from "./components/QuestionForm";
 import { Prompt } from "next/font/google";
-import { Login } from "@mui/icons-material";
-import QuestionnairePage from "./questionaire";
 import LoginPage from "./login";
 
 const prompt = Prompt({
@@ -21,9 +17,7 @@ const theme = createTheme({
 export default function Home() {
   return (
     <ThemeProvider theme={theme}>
-      <Box>
-        <LoginPage/>
-      </Box>
+      <LoginPage />
     </ThemeProvider>
   );
 }

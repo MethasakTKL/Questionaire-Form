@@ -1,7 +1,11 @@
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import Grid from "@mui/material/Grid2";
+import toast, { Toaster } from "react-hot-toast";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { auth } from "../../firebase/config";
 
 const validationSchema = yup.object({
   email: yup
@@ -12,18 +16,28 @@ const validationSchema = yup.object({
 });
 
 export default function LoginPage() {
+  const router = useRouter();
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log("Form Data:", values);
-      alert(JSON.stringify(values, null, 2));
+    validationSchema,
+    onSubmit: async ({
+      email,
+      password,
+    }: {
+      email: string;
+      password: string;
+    }) => {
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      if (res?.user) {
+        router.push("/questionaire");
+      } else {
+        toast.error("Check your user information!");
+      }
     },
   });
-
   return (
     <Box
       sx={{
@@ -101,7 +115,7 @@ export default function LoginPage() {
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.touched.email && formik.errors.email}
                 fullWidth
-                sx={{width:"20rem"}}
+                sx={{ width: "20rem" }}
               />
               {/* Password */}
               <TextField
@@ -119,8 +133,8 @@ export default function LoginPage() {
               />
             </Box>
             <Button
+              type="submit"
               variant="contained"
-              href="/questionaire"
               sx={{
                 mt: "2rem",
                 width: "50%",
@@ -128,7 +142,7 @@ export default function LoginPage() {
                 background: "#e25328",
               }}
             >
-              Login
+              Log in
             </Button>
           </Paper>
         </form>
