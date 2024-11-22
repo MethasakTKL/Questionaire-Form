@@ -1,3 +1,4 @@
+"use client";
 import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Prompt } from "next/font/google";
