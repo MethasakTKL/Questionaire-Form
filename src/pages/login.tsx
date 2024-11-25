@@ -156,6 +156,7 @@ function LoginPage() {
                 height: "3rem",
                 background: "#e25328",
               }}
+              disabled={formik.isSubmitting}
             >
               Log in
             </Button>
