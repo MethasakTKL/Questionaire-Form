@@ -45,7 +45,7 @@ export default function NavBar() {
               justifyContent: "flex-start",
             }}
           >
-            <Typography sx={{ color: "black", fontSize: "20pt" }}>
+            <Typography sx={{ color: "black", fontSize: {xs:"13pt",sm:"15pt",md:"20pt"} }}>
               🦊 Foxbith Questionnaire
             </Typography>
           </Box>
@@ -59,7 +59,7 @@ export default function NavBar() {
             }}
           >
             {email ? (
-              <Typography sx={{ color: "black", fontSize: "12pt" }}>
+              <Typography sx={{ color: "black", fontSize: {xs:"10pt",md:"12pt"} }}>
                 {email}
               </Typography>
             ) : (

@@ -105,7 +105,7 @@ function LoginPage() {
                 flexDirection: "column",
                 mt: "2rem",
                 height: "10rem",
-                gap: 1,
+                gap: 3,
               }}
             >
               {/* Email */}
