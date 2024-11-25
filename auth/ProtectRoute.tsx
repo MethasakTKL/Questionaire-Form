@@ -9,8 +9,12 @@ export const withAuth = (Component: React.FC) => {
     const router = useRouter();
 
     useEffect(() => {
-      if (!loading && !user) {
-        router.push("/login");
+      if (!loading) {
+        if (!user && router.pathname !== "/login") {
+          router.push("/login");
+        } else if (user && router.pathname === "/login") {
+          router.push("/questionaire");
+        }
       }
     }, [user, loading, router]);
 
@@ -28,7 +32,6 @@ export const withAuth = (Component: React.FC) => {
           <CircularProgress sx={{ color: "#ff5d01" }} size={60} />
         </Box>
       );
-
-    return user ? <Component /> : null;
+    return <Component />;
   };
 };

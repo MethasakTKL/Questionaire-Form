@@ -6,7 +6,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { auth } from "../../firebase/config";
-import { redirectIfAuth } from "../../auth/RedirectIfAuth";
+import {withAuth } from "../../auth/ProtectRoute";
 
 const validationSchema = yup.object({
   email: yup
@@ -167,4 +167,4 @@ function LoginPage() {
   );
 }
 
-export default redirectIfAuth(LoginPage);
+export default withAuth(LoginPage);
