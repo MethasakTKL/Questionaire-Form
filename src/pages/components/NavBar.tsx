@@ -21,6 +21,7 @@ export default function NavBar() {
     const user = auth.currentUser;
     if (user) {
       setEmail(user.email);
+      console.log("User data",user)
     }
   }, [auth]);
 

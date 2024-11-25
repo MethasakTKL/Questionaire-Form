@@ -3,9 +3,10 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { auth } from "../../firebase/config";
+import { redirectIfAuth } from "../../auth/RedirectIfAuth";
 
 const validationSchema = yup.object({
   email: yup
@@ -15,7 +16,9 @@ const validationSchema = yup.object({
   password: yup.string().required("Please enter your password"),
 });
 
-export default function LoginPage() {
+function LoginPage() {
+  const [error, setError] = useState("");
+
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -30,11 +33,11 @@ export default function LoginPage() {
       email: string;
       password: string;
     }) => {
-      const res = await signInWithEmailAndPassword(auth, email, password);
-      if (res?.user) {
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
         router.push("/questionaire");
-      } else {
-        toast.error("Check your user information!");
+      } catch (err) {
+        setError("Invalid email or password");
       }
     },
   });
@@ -93,7 +96,7 @@ export default function LoginPage() {
                 lineHeight: 1,
               }}
             >
-              Questionaire Foxbith
+              Foxbith Questionaire
             </Typography>
 
             <Box
@@ -132,6 +135,18 @@ export default function LoginPage() {
                 fullWidth
               />
             </Box>
+            {error && (
+              <Typography
+                sx={{
+                  color: "red",
+                  marginTop: "1rem",
+                  fontSize: "1rem",
+                  fontWeight: "500",
+                }}
+              >
+                {error}
+              </Typography>
+            )}
             <Button
               type="submit"
               variant="contained"
@@ -150,3 +165,5 @@ export default function LoginPage() {
     </Box>
   );
 }
+
+export default redirectIfAuth(LoginPage);

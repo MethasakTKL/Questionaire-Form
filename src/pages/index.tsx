@@ -1,24 +1,33 @@
 "use client";
-import { Box } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Prompt } from "next/font/google";
-import LoginPage from "./login";
 
-const prompt = Prompt({
-  weight: ["100", "300", "400", "700", "900"],
-  style: ["normal"],
-  subsets: ["latin"],
-});
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { auth } from "../../firebase/config";
+import { Box, CircularProgress } from "@mui/material";
 
-const theme = createTheme({
-  typography: {
-    fontFamily: prompt.style.fontFamily,
-  },
-});
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (user) {
+      router.push("/questionaire");
+    } else {
+      router.push("/login");
+    }
+  }, [router]);
+
   return (
-    <ThemeProvider theme={theme}>
-      <LoginPage />
-    </ThemeProvider>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundColor: "white",
+      }}
+    >
+      <CircularProgress sx={{ color: "#ff5d01" }} size={60} />
+    </Box>
   );
 }
