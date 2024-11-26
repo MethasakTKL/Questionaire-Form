@@ -6,7 +6,9 @@ import { withAuth } from "../../auth/ProtectRoute";
 import NavBar from "./components/NavBar";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { CalendarMonth, Money } from "@mui/icons-material";
+import { CalendarMonth } from "@mui/icons-material";
+import { LotteryData } from "./types/lotterydata";
+import { FaMoneyBillWave } from "react-icons/fa";
 
 const font = Noto_Sans_Thai({
   weight: ["100", "300", "400", "500", "600", "700", "900"],
@@ -19,44 +21,6 @@ const theme = createTheme({
     fontFamily: font.style.fontFamily,
   },
 });
-
-interface LotteryData {
-  displayDate: {
-    date: string;
-    month: string;
-    year: string;
-  };
-  data: {
-    first: {
-      number: { value: string }[];
-    };
-    second: {
-      number: { value: string }[];
-    };
-
-    third: {
-      number: { value: string }[];
-    };
-    fourth: {
-      number: { value: string }[];
-    };
-    fifth: {
-      number: { value: string }[];
-    };
-    last3f: {
-      number: { value: string }[];
-    };
-    last3b: {
-      number: { value: string }[];
-    };
-    last2: {
-      number: { value: string }[];
-    };
-    near1: {
-      number: { value: string }[];
-    };
-  };
-}
 
 function LottoPage() {
   const [lotteryData, setLotteryData] = useState<LotteryData | null>(null);
@@ -102,9 +66,20 @@ function LottoPage() {
             }}
           >
             <CalendarMonth sx={{ fontSize: "15pt", color: "#535455" }} />
-            <Typography variant="h6" sx={{ fontSize: "15pt" }}>
+            <Typography sx={{ fontSize: "15pt" }}>
               ประจำวันที่ : {lotteryData?.displayDate.date}/
               {lotteryData?.displayDate.month}/{lotteryData?.displayDate.year}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ fontSize: "20pt", fontWeight: 600, mt: "1rem" }}>
+              ผลการออกรางวัลสลากกินแบ่งรัฐบาลหกหลัก
             </Typography>
           </Box>
         </Box>
@@ -114,7 +89,7 @@ function LottoPage() {
             mr: { xs: "2rem", md: "10rem" },
           }}
         >
-          <Grid container spacing={1} sx={{ mt: "1rem" }}>
+          <Grid container spacing={1} sx={{ mt: "1rem", mb: "5rem" }}>
             <Grid size={{ xs: 12, md: 3 }}>
               <Box
                 sx={{
@@ -156,11 +131,11 @@ function LottoPage() {
                     gap: 0.5,
                   }}
                 >
-                  <Money sx={{ fontSize: "15pt", color: "white" }} />
+                  <FaMoneyBillWave color="white" />
                   <Typography
                     sx={{ fontSize: "11pt", fontWeight: 700, color: "white" }}
                   >
-                    6,000,000
+                    6,000,000 บาท
                   </Typography>
                 </Box>
               </Box>
@@ -206,11 +181,11 @@ function LottoPage() {
                     gap: 0.5,
                   }}
                 >
-                  <Money sx={{ fontSize: "15pt", color: "#535455" }} />
+                  <FaMoneyBillWave color="#535455" />
                   <Typography
                     sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
                   >
-                    4,000
+                    4,000 บาท
                   </Typography>
                 </Box>
               </Box>
@@ -256,11 +231,12 @@ function LottoPage() {
                     gap: 0.5,
                   }}
                 >
-                  <Money sx={{ fontSize: "15pt", color: "#535455" }} />
+                                    <FaMoneyBillWave color="#535455" />
+
                   <Typography
                     sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
                   >
-                    4,000
+                    4,000 บาท
                   </Typography>
                 </Box>
               </Box>
@@ -306,11 +282,12 @@ function LottoPage() {
                     gap: 0.5,
                   }}
                 >
-                  <Money sx={{ fontSize: "15pt", color: "#535455" }} />
+                                   <FaMoneyBillWave color="#535455" />
+
                   <Typography
                     sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
                   >
-                    2,000
+                    2,000 บาท
                   </Typography>
                 </Box>
               </Box>
@@ -356,11 +333,12 @@ function LottoPage() {
                     gap: 0.5,
                   }}
                 >
-                  <Money sx={{ fontSize: "15pt", color: "#535455" }} />
+                                  <FaMoneyBillWave color="#535455" />
+
                   <Typography
                     sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
                   >
-                    100,000
+                    100,000 บาท
                   </Typography>
                 </Box>
               </Box>
@@ -463,6 +441,226 @@ function LottoPage() {
                     </Grid>
                   ))}
                 </Grid>
+              </Box>
+            </Grid>
+            <Grid size={12} sx={{ mt: "2rem", mb: "2rem" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Typography
+                  sx={{ fontSize: "20pt", fontWeight: 600, mt: "1rem" }}
+                >
+                  ผลการออกรางวัลสลากกินแบ่งรัฐบาลตัวเลขสามหลัก
+                </Typography>
+              </Box>
+            </Grid>
+
+            <Grid size={{ xs: 6, md: 3 }}>
+              <Box
+                sx={{
+                  background: "#e5e5e5",
+                  height: "10rem",
+                  borderRadius: "20px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    padding: 2,
+                    fontWeight: 700,
+                    height: "3rem",
+                    color: "#535455",
+                  }}
+                >
+                  รางวัลสามตรง
+                </Typography>
+                <Box sx={{ textAlign: "center", height: "4rem" }}>
+                  <Typography
+                    sx={{
+                      fontSize: { xs: "20pt", md: "35pt" },
+                      fontWeight: "bold",
+                      color: "#535455",
+                    }}
+                  >
+                    {lotteryData?.data.last3f.number.map((item, id) => (
+                      <span key={id}>{item.value} </span>
+                    ))}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    // background: "yellow",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                    gap: 0.5,
+                  }}
+                >
+                                   <FaMoneyBillWave color="#535455" />
+
+                  <Typography
+                    sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
+                  >
+                    5,648 บาท
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid size={{ xs: 6, md: 3 }}>
+              <Box
+                sx={{
+                  background: "#e5e5e5",
+                  height: "10rem",
+                  borderRadius: "20px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    padding: 2,
+                    fontWeight: 700,
+                    height: "3rem",
+                    color: "#535455",
+                  }}
+                >
+                  รางวัลสามสลับหลัก
+                </Typography>
+                <Box sx={{ textAlign: "center", height: "4rem" }}>
+                  <Typography
+                    sx={{
+                      fontSize: { xs: "20pt", md: "35pt" },
+                      fontWeight: "bold",
+                      color: "#535455",
+                    }}
+                  >
+                    {lotteryData?.data.last3f.number.map((item, id) => (
+                      <span key={id}>{item.value} </span>
+                    ))}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    // background: "yellow",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                    gap: 0.5,
+                  }}
+                >
+                                  <FaMoneyBillWave color="#535455" />
+
+                  <Typography
+                    sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
+                  >
+                    2,465 บาท
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid size={{ xs: 6, md: 3 }}>
+              <Box
+                sx={{
+                  background: "#e5e5e5",
+                  height: "10rem",
+                  borderRadius: "20px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    padding: 2,
+                    fontWeight: 700,
+                    color: "#535455",
+                    height: "3rem",
+                  }}
+                >
+                  รางวัลสองตรง
+                </Typography>
+                <Box sx={{ textAlign: "center", height: "4rem" }}>
+                  <Typography
+                    sx={{
+                      fontSize: { xs: "20pt", md: "35pt" },
+                      fontWeight: "bold",
+                      color: "#535455",
+                    }}
+                  >
+                    {lotteryData?.data.last3b.number.map((item, id) => (
+                      <span key={id}>{item.value} </span>
+                    ))}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    // background: "yellow",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                    gap: 0.5,
+                  }}
+                >
+                                 <FaMoneyBillWave color="#535455" />
+
+                  <Typography
+                    sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
+                  >
+                    551 บาท
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid size={{ xs: 12, md: 3 }}>
+              <Box
+                sx={{
+                  background: "#e5e5e5",
+                  height: "10rem",
+                  borderRadius: "20px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    padding: 2,
+                    fontWeight: 700,
+                    height: "3rem",
+                    color: "#535455",
+                  }}
+                >
+                  รางวัลพิเศษ
+                </Typography>
+                <Box sx={{ textAlign: "center", height: "4rem" }}>
+                  <Typography
+                    sx={{
+                      fontSize: { xs: "25pt", md: "35pt" },
+                      fontWeight: "bold",
+                      color: "#535455",
+                    }}
+                  >
+                    {lotteryData?.data.last2.number.map((item, id) => (
+                      <span key={id}>{item.value} </span>
+                    ))}
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    // background: "yellow",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                    gap: 0.5,
+                  }}
+                >
+                                   <FaMoneyBillWave color="#535455" />
+
+                  <Typography
+                    sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
+                  >
+                    167,648.00 บาท
+                  </Typography>
+                </Box>
               </Box>
             </Grid>
           </Grid>

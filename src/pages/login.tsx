@@ -6,7 +6,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { auth } from "../../firebase/config";
-import {withAuth } from "../../auth/ProtectRoute";
+import { withAuth } from "../../auth/ProtectRoute";
 
 const validationSchema = yup.object({
   email: yup
@@ -81,29 +81,29 @@ function LoginPage() {
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
-              textAlign: "center",
               gap: 2,
               width: "95%",
               maxWidth: "500px",
               margin: "auto",
             }}
           >
+            <img src="/foxbith.png" alt="Foxbith" width={250}/>
             <Typography
               sx={{
-                fontSize: 40,
+                fontSize: 25,
                 fontWeight: "600",
-                color: "#e25328",
+                color: "Black",
                 lineHeight: 1,
               }}
             >
-              Foxbith Questionaire
+              Sign in
             </Typography>
 
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                mt: "2rem",
+                mt: "1rem",
                 height: "10rem",
                 gap: 3,
               }}
