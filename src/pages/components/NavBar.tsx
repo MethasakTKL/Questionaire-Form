@@ -21,7 +21,7 @@ export default function NavBar() {
     const user = auth.currentUser;
     if (user) {
       setEmail(user.email);
-      console.log("User data",user)
+      console.log("User data", user);
     }
   }, [auth]);
 
@@ -34,8 +34,8 @@ export default function NavBar() {
     }
   };
   return (
-    <Box>
-      <AppBar position="static" elevation={0} sx={{ background: "white" }}>
+    <Box mb={"4rem"}>
+      <AppBar position="fixed" elevation={0} sx={{ background: "white" }}>
         <Toolbar>
           <Box
             sx={{
@@ -45,9 +45,27 @@ export default function NavBar() {
               justifyContent: "flex-start",
             }}
           >
-            <Typography sx={{ color: "black", fontSize: {xs:"13pt",sm:"15pt",md:"20pt"} }}>
-              🦊 Foxbith Questionnaire
-            </Typography>
+            <Button href="/home">
+              <Typography
+                sx={{
+                  color: "black",
+                  fontSize: { xs: "13pt", sm: "15pt", md: "18pt" },
+                }}
+              >
+                🦊 Foxbith
+              </Typography>{" "}
+            </Button>
+          </Box>
+          <Box sx={{ display: "flex", gap: 3 }}>
+            <Button href="/home">
+              <Typography sx={{ color: "#535455" }}>Home</Typography>
+            </Button>
+            <Button href="/questionaire">
+              <Typography sx={{ color: "#535455" }}>Questionaire</Typography>
+            </Button>
+            <Button href="/lotto">
+              <Typography sx={{ color: "#535455" }}>Lottery</Typography>
+            </Button>
           </Box>
           <Box
             sx={{
@@ -59,7 +77,9 @@ export default function NavBar() {
             }}
           >
             {email ? (
-              <Typography sx={{ color: "black", fontSize: {xs:"10pt",md:"12pt"} }}>
+              <Typography
+                sx={{ color: "#535455", fontSize: { xs: "10pt", md: "12pt" } }}
+              >
                 {email}
               </Typography>
             ) : (

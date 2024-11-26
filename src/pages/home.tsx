@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  CardActionArea,
   CardActions,
   CardContent,
   CardMedia,
@@ -11,56 +12,79 @@ import {
 import Grid from "@mui/material/Grid2";
 import { withAuth } from "../../auth/ProtectRoute";
 import { LogoutOutlined } from "@mui/icons-material";
+import NavBar from "./components/NavBar";
 
 function HomePage() {
   return (
     <Box>
+      <NavBar />
       <Box
         sx={{
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          background: "black",
+          margin:"2rem",
+          mt: "6rem",
         }}
       >
-        <Grid container spacing={2}>
-          <Grid size={6} sx={{}}>
-            <Box sx={{ width: "20rem", height: "10rem" }}>
-              <Button
-                variant="contained"
-                href="/questionaire"
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: 5,
-                  background: "#ff5d01",
-                  textAlign:"center"
-                }}
-              >
-                <Typography variant="h4" sx={{ textTransform: "none" }}>
-                  Foxbit Questionaire
-                </Typography>
-              </Button>
-            </Box>
+        <Grid container spacing={2} sx={{}}>
+          
+          <Grid size={{xs:12,md:6}}>
+            <Card sx={{}}>
+              <CardActionArea href="/questionaire">
+                <CardMedia
+                  component="img"
+                  height="300rem"
+                  image="/questionaire.png"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    fontFamily="Prompt"
+                  >
+                    Foxbith Questionaire
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    fontFamily="Prompt"
+                    sx={{ color: "text.secondary" }}
+                  >
+                    แบบฟอร์มคำถาม Foxbith Questionaire
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </Grid>
-          <Grid size={6} sx={{}}>
-            <Box sx={{ width: "20rem", height: "10rem" }}>
-              <Button
-                variant="contained"
-                href="/lotto"
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  borderRadius: 5,
-                  background: "#ff5d01",
-                }}
-              >
-                <Typography variant="h4" sx={{ textTransform: "none" }}>
-                  Lotto
-                </Typography>
-              </Button>
-            </Box>
+          <Grid size={{xs:12,md:6}}>
+            <Card sx={{ }}>
+              <CardActionArea href="/lotto">
+                <CardMedia
+                  component="img"
+                  height="300rem"
+                  image="/lottery.png"
+                  alt="green iguana"
+                />
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    component="div"
+                    fontFamily="Prompt"
+                  >
+                    ผลสลากกินแบ่งรัฐบาล
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    fontFamily="Prompt"
+                    sx={{ color: "text.secondary" }}
+                  >
+                    ตรวจผลสลากกินแบ่งรัฐบาลประจำวันที่ 16 พฤศจิกายน 2567
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
           </Grid>
         </Grid>
       </Box>

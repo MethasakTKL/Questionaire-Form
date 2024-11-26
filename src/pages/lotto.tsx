@@ -6,7 +6,7 @@ import { withAuth } from "../../auth/ProtectRoute";
 import NavBar from "./components/NavBar";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Money } from "@mui/icons-material";
+import { CalendarMonth, Money } from "@mui/icons-material";
 
 const font = Noto_Sans_Thai({
   weight: ["100", "300", "400", "500", "600", "700", "900"],
@@ -81,7 +81,7 @@ function LottoPage() {
   return (
     <ThemeProvider theme={theme}>
       <NavBar />
-      <Box margin={"1rem"}>
+      <Box margin={"1rem"} mt={"5rem"}>
         <Box
           sx={{
             ml: { xs: "2rem", md: "10rem" },
@@ -91,10 +91,22 @@ function LottoPage() {
           <Typography sx={{ fontSize: "40pt", fontWeight: 700 }}>
             ผลสลากกินแบ่งรัฐบาล
           </Typography>
-          <Typography variant="h6" sx={{ fontSize: "15pt" }}>
-            ประจำวันที่ : {lotteryData?.displayDate.date}/
-            {lotteryData?.displayDate.month}/{lotteryData?.displayDate.year}
-          </Typography>
+          <Box
+            sx={{
+              // background: "yellow",
+              display: "flex",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              textAlign: "center",
+              gap: 0.5,
+            }}
+          >
+            <CalendarMonth sx={{ fontSize: "15pt", color: "#535455" }} />
+            <Typography variant="h6" sx={{ fontSize: "15pt" }}>
+              ประจำวันที่ : {lotteryData?.displayDate.date}/
+              {lotteryData?.displayDate.month}/{lotteryData?.displayDate.year}
+            </Typography>
+          </Box>
         </Box>
         <Box
           sx={{
@@ -146,12 +158,7 @@ function LottoPage() {
                 >
                   <Money sx={{ fontSize: "15pt", color: "white" }} />
                   <Typography
-                    sx={{
-                      fontSize: "11pt",
-                      fontWeight: 700,
-                      height: "3rem",
-                      color: "white",
-                    }}
+                    sx={{ fontSize: "11pt", fontWeight: 700, color: "white" }}
                   >
                     6,000,000
                   </Typography>
