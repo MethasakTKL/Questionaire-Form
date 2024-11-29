@@ -1,4 +1,3 @@
-import { LogoutOutlined, Menu } from "@mui/icons-material";
 import {
   AppBar,
   Avatar,
@@ -9,44 +8,22 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import { getAuth, signOut } from "firebase/auth";
-import { useRouter } from "next/router";
-import { auth } from "../../../firebase/config";
-import { TiThMenu } from "react-icons/ti";
 import AvatarMenu from "./AvatarMenu";
 import MenuDrawer from "./MenuDrawer";
-
-function stringAvatar(email: string) {
-  email = email.toUpperCase();
-  return {
-    sx: {
-      bgcolor: "#535455",
-    },
-    children: `${email.split(" ")[0][0]}`,
-  };
-}
+import React from "react";
+import { useRouter } from "next/router";
+import { auth } from "../../../firebase/config";
 
 export default function NavBar() {
-  const [email, setEmail] = useState<string | null>(null);
+  const [email, setEmail] = React.useState<string | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const user = auth.currentUser;
     if (user) {
       setEmail(user.email);
-      console.log("User data", user);
     }
   }, [auth]);
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      router.push("/login");
-    } catch (error) {
-      console.error("Logout failed: ", error);
-    }
-  };
   return (
     <Box mb={{ xs: "3.5rem", md: "4rem" }}>
       <AppBar position="fixed" elevation={0} sx={{ background: "white" }}>
@@ -90,8 +67,7 @@ export default function NavBar() {
               gap: 1,
             }}
           >
-            <AvatarMenu />
-            {/* {email ? (
+            {email ? (
               <Typography
                 sx={{ color: "#535455", fontSize: { xs: "10pt", md: "12pt" } }}
               >
@@ -101,10 +77,8 @@ export default function NavBar() {
               <Typography sx={{ color: "black", fontSize: "12pt" }}>
                 Not logged in
               </Typography>
-            )} */}
-            {/* <IconButton onClick={handleLogout}>
-              <LogoutOutlined />
-            </IconButton> */}
+            )}
+            <AvatarMenu />
           </Box>
         </Toolbar>
         <Toolbar sx={{ display: { xs: "flex", md: "none" } }}>

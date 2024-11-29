@@ -1,17 +1,13 @@
 import {
   Box,
-  Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
-  IconButton,
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { withAuth } from "../../auth/ProtectRoute";
-import { LogoutOutlined } from "@mui/icons-material";
 import NavBar from "./components/NavBar";
 
 function HomePage() {

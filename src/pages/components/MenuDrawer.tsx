@@ -1,19 +1,15 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import { CardGiftcard, GifBox, Home, Money, QuestionAnswer, Stars } from "@mui/icons-material";
+import { Home, QuestionAnswer, Stars } from "@mui/icons-material";
 import { TiThMenu } from "react-icons/ti";
-import { IconButton, Typography } from "@mui/material";
-import { FaMoneyBillWave } from "react-icons/fa";
+import { IconButton } from "@mui/material";
 
 export default function MenuDrawer() {
   const [open, setOpen] = React.useState(false);
@@ -24,7 +20,16 @@ export default function MenuDrawer() {
 
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
-      <Box sx={{background:"black",height:"5rem",width:"100%",display:"flex",justifyContent:"center",alignItems:"center"}}>
+      <Box
+        sx={{
+          background: "black",
+          height: "5rem",
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <img src="/foxbith_white.png" alt="Foxbith" width={150} />
       </Box>
       <Divider />
@@ -48,7 +53,7 @@ export default function MenuDrawer() {
         <ListItem disablePadding>
           <ListItemButton href="/lotto">
             <ListItemIcon>
-              <Stars/>
+              <Stars />
             </ListItemIcon>
             <ListItemText primary={"Lottery"} />
           </ListItemButton>

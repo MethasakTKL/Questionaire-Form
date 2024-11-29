@@ -24,7 +24,6 @@ export default function AvatarMenu() {
     const user = auth.currentUser;
     if (user) {
       setEmail(user.email);
-      console.log("User data", user);
     }
   }, [auth]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);

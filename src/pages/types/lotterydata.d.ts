@@ -36,15 +36,19 @@ export interface LotteryData {
     };
     n3:{
       straight3:{
+        price: number;
         number: { value: string }[];
       }
       straight2:{
+        price: number;
         number: { value: string }[];
       }
-      shuffle3:{
+      shuffle3:{        
+        price: number;
         number: { value: string }[];
       }
       special:{
+        price: number;
         number: { value: string }[];
       }
     }

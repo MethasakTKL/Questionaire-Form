@@ -1,4 +1,11 @@
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
@@ -7,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { auth } from "../../firebase/config";
 import { withAuth } from "../../auth/ProtectRoute";
+import { CheckCircleOutline } from "@mui/icons-material";
 
 const validationSchema = yup.object({
   email: yup
@@ -18,7 +26,7 @@ const validationSchema = yup.object({
 
 function LoginPage() {
   const [error, setError] = useState("");
-
+  const [success, setSuccess] = useState(false);
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
@@ -35,8 +43,11 @@ function LoginPage() {
     }) => {
       try {
         await signInWithEmailAndPassword(auth, email, password);
+        setSuccess(true);
+        setError("");
         router.push("/questionaire");
       } catch (err) {
+        setSuccess(false);
         setError("Invalid email or password");
       }
     },
@@ -87,7 +98,7 @@ function LoginPage() {
               margin: "auto",
             }}
           >
-            <img src="/foxbith.png" alt="Foxbith" width={250}/>
+            <img src="/foxbith.png" alt="Foxbith" width={250} />
             <Typography
               sx={{
                 fontSize: 25,
