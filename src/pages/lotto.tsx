@@ -65,9 +65,7 @@ function Lotto() {
           alignItems="center"
           height="100vh"
         >
-          <Typography color="error" sx={{ fontSize: "20pt" }}>
-            เกิดข้อผิดพลาดในการโหลดข้อมูล
-          </Typography>
+          <img src="/error.png" alt="error loading data" width={700} />
         </Box>
       </ThemeProvider>
     );
