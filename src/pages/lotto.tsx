@@ -21,17 +21,6 @@ import {
   useQuery,
 } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
-
-function LottoPage() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Lotto />
-    </QueryClientProvider>
-  );
-}
-export default withAuth(LottoPage);
-
 const font = Noto_Sans_Thai({
   weight: ["100", "300", "400", "500", "600", "700", "900"],
   style: ["normal"],
@@ -43,6 +32,17 @@ const theme = createTheme({
     fontFamily: font.style.fontFamily,
   },
 });
+
+
+const queryClient = new QueryClient();
+function LottoPage() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Lotto />
+    </QueryClientProvider>
+  );
+}
+export default withAuth(LottoPage);
 
 const fetchLotteryData = async (): Promise<LotteryData> => {
   const response = await axios.get("/api/lotto");
@@ -81,7 +81,7 @@ function Lotto() {
           }}
         >
           <Typography
-            sx={{ fontSize: { xs: "30pt", md: "40pt" }, fontWeight: 700 }}
+            sx={{ fontSize: { xs: "25pt", md: "40pt" }, fontWeight: 700 }}
           >
             ผลสลากกินแบ่งรัฐบาล
           </Typography>
