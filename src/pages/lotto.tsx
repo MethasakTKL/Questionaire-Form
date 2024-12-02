@@ -33,7 +33,6 @@ const theme = createTheme({
   },
 });
 
-
 const queryClient = new QueryClient();
 function LottoPage() {
   return (
@@ -530,7 +529,7 @@ function Lotto() {
                 </Typography>
               </Box>
             </Grid>
-            <Grid size={{ xs: 6, md: 6, lg: 3 }}>
+            <Grid size={{ xs: 12, md: 12, lg: 6 }}>
               <Box
                 sx={{
                   background:
@@ -553,7 +552,7 @@ function Lotto() {
                   {lotteryData?.n3?.special?.number?.length ? (
                     <Typography
                       sx={{
-                        fontSize: { xs: "18pt", md: "30pt", lg: "25pt" },
+                        fontSize: { xs: "25pt",sm:"30pt", md: "35pt", lg: "35pt" },
                         fontWeight: "bold",
                         color: "white",
                       }}
@@ -597,6 +596,61 @@ function Lotto() {
                   sx={{
                     padding: 2,
                     fontWeight: 700,
+                    color: "#535455",
+                    height: "3rem",
+                  }}
+                >
+                  รางวัลสองตรง
+                </Typography>
+                <Box sx={{ textAlign: "center", height: "4rem" }}>
+                  {lotteryData?.n3?.straight2?.number?.length ? (
+                    <Typography
+                      sx={{
+                        fontSize: { xs: "25pt",sm:"30pt", md: "35pt", lg: "35pt" },
+                        fontWeight: "bold",
+                        color: "#535455",
+                      }}
+                    >
+                      {lotteryData?.n3.straight2.number.map((item, id) => (
+                        <span key={id}>{item.value} </span>
+                      ))}
+                    </Typography>
+                  ) : (
+                    <CircularProgress size={40} sx={{ color: "#535455" }} />
+                  )}
+                </Box>
+                <Box
+                  sx={{
+                    // background: "yellow",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                    gap: 0.5,
+                  }}
+                >
+                  <FaMoneyBillWave color="#535455" />
+
+                  <Typography
+                    sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
+                  >
+                    {lotteryData?.n3.straight2.price} บาท
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid size={{ xs: 6, md: 6, lg: 3 }}>
+              <Box
+                sx={{
+                  background: "#e5e5e5",
+                  height: "10rem",
+                  borderRadius: "20px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    padding: 2,
+                    fontWeight: 700,
                     height: "3rem",
                     color: "#535455",
                   }}
@@ -607,7 +661,7 @@ function Lotto() {
                   {lotteryData?.n3?.straight3?.number?.length ? (
                     <Typography
                       sx={{
-                        fontSize: { xs: "20pt", md: "35pt" },
+                        fontSize: { xs: "25pt",sm:"30pt", md: "35pt", lg: "35pt" },
                         fontWeight: "bold",
                         color: "#535455",
                       }}
@@ -639,7 +693,7 @@ function Lotto() {
                 </Box>
               </Box>
             </Grid>
-            <Grid size={{ xs: 6, md: 6, lg: 3 }}>
+            <Grid size={{ xs: 12, md: 12, lg: 12 }}>
               <Box
                 sx={{
                   background: "#e5e5e5",
@@ -661,7 +715,7 @@ function Lotto() {
                   {lotteryData?.n3?.shuffle3?.number?.length ? (
                     <Typography
                       sx={{
-                        fontSize: { xs: "20pt", md: "35pt" },
+                        fontSize: { xs: "25pt",sm:"30pt", md: "35pt", lg: "35pt" },
                         fontWeight: "bold",
                         color: "#535455",
                       }}
@@ -689,61 +743,6 @@ function Lotto() {
                     sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
                   >
                     {lotteryData?.n3.shuffle3.price} บาท
-                  </Typography>
-                </Box>
-              </Box>
-            </Grid>
-            <Grid size={{ xs: 6, md: 6, lg: 3 }}>
-              <Box
-                sx={{
-                  background: "#e5e5e5",
-                  height: "10rem",
-                  borderRadius: "20px",
-                }}
-              >
-                <Typography
-                  sx={{
-                    padding: 2,
-                    fontWeight: 700,
-                    color: "#535455",
-                    height: "3rem",
-                  }}
-                >
-                  รางวัลสองตรง
-                </Typography>
-                <Box sx={{ textAlign: "center", height: "4rem" }}>
-                  {lotteryData?.n3?.straight2?.number?.length ? (
-                    <Typography
-                      sx={{
-                        fontSize: { xs: "20pt", md: "35pt" },
-                        fontWeight: "bold",
-                        color: "#535455",
-                      }}
-                    >
-                      {lotteryData?.n3.straight2.number.map((item, id) => (
-                        <span key={id}>{item.value} </span>
-                      ))}
-                    </Typography>
-                  ) : (
-                    <CircularProgress size={40} sx={{ color: "#535455" }} />
-                  )}
-                </Box>
-                <Box
-                  sx={{
-                    // background: "yellow",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    textAlign: "center",
-                    gap: 0.5,
-                  }}
-                >
-                  <FaMoneyBillWave color="#535455" />
-
-                  <Typography
-                    sx={{ fontSize: "11pt", fontWeight: 700, color: "#535455" }}
-                  >
-                    {lotteryData?.n3.straight2.price} บาท
                   </Typography>
                 </Box>
               </Box>
