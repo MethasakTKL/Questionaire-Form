@@ -76,7 +76,7 @@ function HomePage() {
                     fontFamily="Prompt"
                     sx={{ color: "text.secondary" }}
                   >
-                    ตรวจผลสลากกินแบ่งรัฐบาลประจำวันที่ 16 พฤศจิกายน 2567
+                    ตรวจผลสลากกินแบ่งรัฐบาลล่าสุด
                   </Typography>
                 </CardContent>
               </CardActionArea>
