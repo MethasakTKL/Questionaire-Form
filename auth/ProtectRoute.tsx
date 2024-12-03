@@ -13,7 +13,7 @@ export const withAuth = (Component: React.FC) => {
         if (!user && router.pathname !== "/login") {
           router.push("/login");
         } else if (user && router.pathname === "/login") {
-          router.push("/questionaire");
+          router.push("/home");
         }
       }
     }, [user, loading, router]);
